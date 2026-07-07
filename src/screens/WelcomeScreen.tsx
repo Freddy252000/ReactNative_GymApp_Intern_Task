@@ -1,39 +1,118 @@
+// src/screens/WelcomeScreen.tsx
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AppButton from '../components/AppButton';
 import { colors, typography } from '../theme/colors';
 import { RootStackParamList } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Welcome'>;
 
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=1200';
+
 export default function WelcomeScreen({ navigation }: Props) {
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1200' }}
-      style={styles.background}
-    >
-      <View style={styles.overlay} />
-      <SafeAreaView style={styles.safe}>
-        <View style={styles.content}>
-          <Text style={styles.title}>GymFlow</Text>
-          <Text style={styles.subtitle}>Track workouts. Build habits. See real progress.</Text>
-          <AppButton title="Get Started" onPress={() => navigation.navigate('Login')} style={styles.button} />
+    <View style={styles.container}>
+      <ImageBackground source={{ uri: HERO_IMAGE }} style={styles.hero} resizeMode="cover">
+        <View style={styles.heroOverlay} />
+      </ImageBackground>
+
+      <SafeAreaView style={styles.content}>
+        <View style={styles.logoRow}>
+          <View style={styles.logoDumbbell} />
+          <Text style={styles.logoText}>
+            GYM<Text style={{ color: colors.primaryGreen }}>FLOW</Text>
+          </Text>
+        </View>
+
+        <Text style={styles.headline}>
+          Train smarter,{'\n'}feel <Text style={{ color: colors.primaryGreen }}>stronger.</Text>
+        </Text>
+        <Text style={styles.subtitle}>
+          A modern fitness app for workouts, progress tracking, and daily gym motivation.
+        </Text>
+
+        <View style={{ marginTop: 24 }}>
+          <AppButton title="Get Started" icon="arrow-forward" onPress={() => navigation.navigate('Login')} />
+          <View style={{ height: 12 }} />
+          <AppButton title="I already have an account" variant="outline" onPress={() => navigation.navigate('Login')} />
+        </View>
+
+        <View style={styles.dots}>
+          <View style={[styles.dot, styles.dotActive]} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
         </View>
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1 },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(16,24,40,0.55)',
+  container: {
+    flex: 1,
+    backgroundColor: colors.primaryDark,
   },
-  safe: { flex: 1, justifyContent: 'flex-end' },
-  content: { padding: 24, paddingBottom: 40 },
-  title: { ...typography.h1, color: colors.white, fontSize: 34 },
-  subtitle: { ...typography.body, color: '#E4E7EC', marginTop: 8, marginBottom: 24 },
-  button: { alignSelf: 'stretch' },
+  hero: {
+    height: '45%',
+    width: '100%',
+  },
+  heroOverlay: {
+     ...(StyleSheet as any).absoluteFillObject,
+    backgroundColor: 'rgba(16,24,40,0.35)',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    marginTop: -40,
+  },
+  logoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginBottom: 24,
+  },
+  logoDumbbell: {
+    width: 10,
+    height: 26,
+    borderRadius: 4,
+    backgroundColor: colors.primaryGreen,
+    marginRight: 8,
+  },
+  logoText: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: colors.white,
+    letterSpacing: 1,
+  },
+  headline: {
+    ...typography.h1,
+    fontSize: 32,
+    color: colors.white,
+    lineHeight: 40,
+  },
+  subtitle: {
+    ...typography.body,
+    color: '#98A2B3',
+    marginTop: 12,
+    lineHeight: 22,
+  },
+  dots: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    marginBottom: 16,
+  },
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#344054',
+    marginHorizontal: 4,
+  },
+  dotActive: {
+    backgroundColor: colors.primaryGreen,
+    width: 18,
+  },
 });

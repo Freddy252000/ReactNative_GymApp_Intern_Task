@@ -1,5 +1,6 @@
+// src/screens/HomeScreen.tsx
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, ImageBackground, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Pressable } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import AppButton from '../components/AppButton';
 import { workouts, weeklySummary, mockUser } from '../data/workouts';
 import { colors, typography, radius } from '../theme/colors';
 import { MainTabParamList, RootStackParamList } from '../types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type HomeScreenProps = CompositeScreenProps<
   BottomTabScreenProps<MainTabParamList, 'Home'>,
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   todayOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...(StyleSheet as any).absoluteFillObject,
     backgroundColor: 'rgba(16,24,40,0.45)',
     borderRadius: radius.lg,
   },
