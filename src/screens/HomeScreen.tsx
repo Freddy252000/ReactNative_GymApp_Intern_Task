@@ -1,15 +1,23 @@
-// src/screens/HomeScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, ImageBackground, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AppCard from '../components/AppCard';
 import AppButton from '../components/AppButton';
 import { workouts, weeklySummary, mockUser } from '../data/workouts';
 import { colors, typography, radius } from '../theme/colors';
+import { MainTabParamList, RootStackParamList } from '../types';
+
+type HomeScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<MainTabParamList, 'Home'>,
+  NativeStackScreenProps<RootStackParamList>
+>;
 
 const todaysWorkout = workouts[0];
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
@@ -103,7 +111,16 @@ export default function HomeScreen({ navigation }) {
   );
 }
 
-function QuickAction({ icon, iconBg, iconColor, title, subtitle, onPress }) {
+interface QuickActionProps {
+  icon: string;
+  iconBg: string;
+  iconColor: string;
+  title: string;
+  subtitle: string;
+  onPress: () => void;
+}
+
+function QuickAction({ icon, iconBg, iconColor, title, subtitle, onPress }: QuickActionProps) {
   return (
     <AppCard onPress={onPress} style={styles.quickAction}>
       <View style={styles.quickActionRow}>

@@ -1,14 +1,21 @@
-// src/components/ScreenHeader.js
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors, typography } from '../theme/colors';
+
+interface ScreenHeaderProps {
+  title: string;
+  onBack?: () => void;
+  rightIcon?: string;
+  onRightPress?: () => void;
+  dark?: boolean;
+}
 
 /**
  * Shared screen header. Supports an optional back button (for stacked
  * screens like Workout Detail) and an optional right-side icon action.
  */
-export default function ScreenHeader({ title, onBack, rightIcon, onRightPress, dark = false }) {
+export default function ScreenHeader({ title, onBack, rightIcon, onRightPress, dark = false }: ScreenHeaderProps) {
   const textColor = dark ? colors.white : colors.primaryDark;
 
   return (

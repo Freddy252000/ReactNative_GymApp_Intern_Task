@@ -1,7 +1,7 @@
-// src/theme/colors.js
 // Central color palette + typography scale used across the whole app.
 // Keeping this in one file makes it trivial to re-theme the app later
 // (e.g. for the "dark mode toggle" bonus feature).
+import { TextStyle } from 'react-native';
 
 export const colors = {
   primaryDark: '#101828',
@@ -19,9 +19,9 @@ export const colors = {
   greenTint: '#E4F9F0',
   orangeTint: '#FFEEE1',
   darkTint: 'rgba(16, 24, 40, 0.06)',
-};
+} as const;
 
-export const typography = {
+export const typography: Record<string, TextStyle> = {
   h1: { fontSize: 28, fontWeight: '700' },
   h2: { fontSize: 22, fontWeight: '700' },
   h3: { fontSize: 18, fontWeight: '600' },
@@ -36,7 +36,7 @@ export const radius = {
   md: 16,
   lg: 22,
   pill: 999,
-};
+} as const;
 
 export const spacing = {
   xs: 4,
@@ -44,6 +44,6 @@ export const spacing = {
   md: 16,
   lg: 24,
   xl: 32,
-};
+} as const;
 
 export default colors;

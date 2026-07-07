@@ -1,9 +1,8 @@
-// src/navigation/AppNavigator.js
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -13,11 +12,12 @@ import WorkoutDetailScreen from '../screens/WorkoutDetailScreen';
 import ProgressScreen from '../screens/ProgressScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { colors } from '../theme/colors';
+import { MainTabParamList, RootStackParamList } from '../types';
 
-const RootStack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const TAB_ICONS = {
+const TAB_ICONS: Record<keyof MainTabParamList, string> = {
   Home: 'home',
   Workouts: 'barbell',
   Progress: 'stats-chart',
@@ -39,13 +39,10 @@ function MainTabs() {
           borderTopColor: colors.border,
         },
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
-        tabBarIcon: ({ color, size, focused }) => (
-          <Ionicons
-            name={focused ? TAB_ICONS[route.name] : `${TAB_ICONS[route.name]}-outline`}
-            size={size - 2}
-            color={color}
-          />
-        ),
+        tabBarIcon: ({ color, size, focused }) => {
+          const iconName = TAB_ICONS[route.name as keyof MainTabParamList];
+          return <Ionicons name={focused ? iconName : `${iconName}-outline`} size={size - 2} color={color} />;
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />

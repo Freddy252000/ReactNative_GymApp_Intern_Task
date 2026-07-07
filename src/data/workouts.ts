@@ -1,10 +1,10 @@
-// src/data/workouts.js
 // All mock data for the app lives here so screens stay presentation-only.
 // In a real app this file would be replaced by API calls.
+import { MockUser, WeeklyActivityDay, WeeklySummary, Workout, WorkoutCategory } from '../types';
 
-export const categories = ['All', 'Strength', 'Cardio', 'Yoga', 'HIIT', 'Full Body'];
+export const categories: WorkoutCategory[] = ['All', 'Strength', 'Cardio', 'Yoga', 'HIIT', 'Full Body'];
 
-export const workouts = [
+export const workouts: Workout[] = [
   {
     id: 'w1',
     title: 'Full Body Strength',
@@ -70,7 +70,7 @@ export const workouts = [
       { id: 'e1', name: "Child's Pose", detail: '1 min' },
       { id: 'e2', name: 'Cat-Cow Stretch', detail: '2 min' },
       { id: 'e3', name: 'Downward Dog', detail: '1 min' },
-      { id: 'e4', name: "Warrior II", detail: '1 min / side' },
+      { id: 'e4', name: 'Warrior II', detail: '1 min / side' },
       { id: 'e5', name: 'Seated Forward Fold', detail: '2 min' },
     ],
   },
@@ -93,7 +93,7 @@ export const workouts = [
   },
 ];
 
-export const weeklyActivity = [
+export const weeklyActivity: WeeklyActivityDay[] = [
   { day: 'M', percent: 30, type: 'workout' },
   { day: 'T', percent: 70, type: 'workout' },
   { day: 'W', percent: 45, type: 'workout' },
@@ -103,7 +103,7 @@ export const weeklyActivity = [
   { day: 'S', percent: 95, type: 'rest' },
 ];
 
-export const weeklySummary = {
+export const weeklySummary: WeeklySummary = {
   workouts: 4,
   minutes: 145,
   calories: 980,
@@ -112,7 +112,7 @@ export const weeklySummary = {
   dayStreak: 7,
 };
 
-export const mockUser = {
+export const mockUser: MockUser = {
   name: 'Alex Morgan',
   email: 'alex@email.com',
   goal: 'Build Muscle',

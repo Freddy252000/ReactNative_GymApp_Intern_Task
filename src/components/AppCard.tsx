@@ -1,21 +1,24 @@
-// src/components/AppCard.js
-import React from 'react';
-import { View, Pressable, StyleSheet } from 'react-native';
+import React, { ReactNode } from 'react';
+import { View, Pressable, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { colors, radius } from '../theme/colors';
+
+interface AppCardProps {
+  children: ReactNode;
+  onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
+  dark?: boolean;
+}
 
 /**
  * Generic card container. Pass onPress to make it tappable,
  * otherwise it renders as a plain static card.
  */
-export default function AppCard({ children, onPress, style, dark = false }) {
-  const cardStyle = [styles.card, dark && styles.dark, style];
+export default function AppCard({ children, onPress, style, dark = false }: AppCardProps) {
+  const cardStyle: StyleProp<ViewStyle>[] = [styles.card, dark && styles.dark, style];
 
   if (onPress) {
     return (
-      <Pressable
-        onPress={onPress}
-        style={({ pressed }) => [...cardStyle, pressed && styles.pressed]}
-      >
+      <Pressable onPress={onPress} style={({ pressed }) => [...cardStyle, pressed && styles.pressed]}>
         {children}
       </Pressable>
     );

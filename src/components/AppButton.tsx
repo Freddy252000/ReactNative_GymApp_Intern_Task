@@ -1,12 +1,22 @@
-// src/components/AppButton.js
 import React from 'react';
-import { Pressable, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable, Text, StyleSheet, ActivityIndicator, View, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors, radius, typography } from '../theme/colors';
+
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
+
+interface AppButtonProps {
+  title: string;
+  onPress?: () => void;
+  variant?: ButtonVariant;
+  icon?: string;
+  loading?: boolean;
+  disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
+}
 
 /**
  * Reusable button used across the whole app.
- * variant: 'primary' | 'secondary' | 'outline' | 'ghost'
  */
 export default function AppButton({
   title,
@@ -16,8 +26,8 @@ export default function AppButton({
   loading = false,
   disabled = false,
   style,
-}) {
-  const containerStyle = [
+}: AppButtonProps) {
+  const containerStyle: StyleProp<ViewStyle>[] = [
     styles.base,
     variant === 'primary' && styles.primary,
     variant === 'secondary' && styles.secondary,
@@ -27,11 +37,11 @@ export default function AppButton({
     style,
   ];
 
-  const textStyle = [
+  const textStyle: TextStyle[] = [
     styles.text,
-    variant === 'outline' && { color: colors.white },
-    variant === 'ghost' && { color: colors.primaryDark },
-  ];
+    variant === 'outline' ? { color: colors.white } : undefined,
+    variant === 'ghost' ? { color: colors.primaryDark } : undefined,
+  ].filter(Boolean) as TextStyle[];
 
   return (
     <Pressable
@@ -44,7 +54,9 @@ export default function AppButton({
       ) : (
         <View style={styles.content}>
           <Text style={textStyle}>{title}</Text>
-          {icon ? <Ionicons name={icon} size={18} color={textStyle[1]?.color || colors.white} style={{ marginLeft: 8 }} /> : null}
+          {icon ? (
+            <Ionicons name={icon} size={18} color={textStyle[1]?.color ?? colors.white} style={{ marginLeft: 8 }} />
+          ) : null}
         </View>
       )}
     </Pressable>
