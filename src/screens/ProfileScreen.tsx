@@ -1,7 +1,7 @@
 // src/screens/ProfileScreen.tsx
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Pressable, Alert } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';

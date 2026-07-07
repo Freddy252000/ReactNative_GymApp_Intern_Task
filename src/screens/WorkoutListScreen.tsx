@@ -1,7 +1,7 @@
 // src/screens/WorkoutListScreen.tsx
 import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, Image, Pressable } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

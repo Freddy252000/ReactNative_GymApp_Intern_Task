@@ -9,8 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AppButton from '../components/AppButton';
 import { colors, typography, radius } from '../theme/colors';
@@ -26,9 +27,6 @@ export default function LoginScreen({ navigation }: Props) {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // Mock login only — no real authentication. We just validate that
-  // both fields are non-empty, then simulate a short network delay.
   const handleLogin = () => {
     if (!email.trim() || !password.trim()) {
       setError('Please enter both email and password to continue.');
@@ -52,6 +50,12 @@ export default function LoginScreen({ navigation }: Props) {
 
           <Text style={styles.title}>Welcome back</Text>
           <Text style={styles.subtitle}>Login to continue your fitness journey.</Text>
+
+          <Image
+            source={require('../assets/Design/images.png')}
+            style={styles.heroImage}
+            resizeMode="contain"
+          />
 
           <View style={styles.field}>
             <Text style={styles.label}>Email address</Text>
@@ -100,19 +104,21 @@ export default function LoginScreen({ navigation }: Props) {
               </View>
               <Text style={styles.rememberText}>Remember me</Text>
             </Pressable>
-            <Text style={styles.forgotText}>Forgot password?</Text>
+            <Pressable hitSlop={8}>
+              <Text style={styles.forgotText}>Forgot password?</Text>
+            </Pressable>
           </View>
 
           <View style={{ marginTop: 20 }}>
             <AppButton title="Login" icon="arrow-forward" onPress={handleLogin} loading={loading} />
           </View>
 
-          {/* <View style={styles.noteBox}>
+          <View style={styles.noteBox}>
             <Ionicons name="information-circle-outline" size={16} color="#98A2B3" />
             <Text style={styles.noteText}>
-              This login is mock only. Empty email/password fields are validated before navigating.
+              This login can be mock only. Validate empty email/password fields before navigating.
             </Text>
-          </View> */}
+          </View>
         </ScrollView>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -125,6 +131,11 @@ const styles = StyleSheet.create({
   backBtn: { width: 32, height: 32, justifyContent: 'center', marginBottom: 12 },
   title: { ...typography.h1, color: colors.white, marginBottom: 6 },
   subtitle: { ...typography.body, color: '#98A2B3', marginBottom: 24 },
+  heroImage: {
+    width: '100%',
+    height: 200,
+    marginBottom: 24,
+  },
   field: { marginBottom: 16 },
   label: { ...typography.small, color: '#98A2B3', marginBottom: 8 },
   inputRow: {

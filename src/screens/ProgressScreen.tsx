@@ -1,7 +1,7 @@
 // src/screens/ProgressScreen.tsx
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import AppCard from '../components/AppCard';
 import ScreenHeader from '../components/ScreenHeader';
 import { weeklySummary, weeklyActivity } from '../data/workouts';

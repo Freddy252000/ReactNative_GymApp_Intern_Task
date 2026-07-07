@@ -1,7 +1,7 @@
 // src/screens/WorkoutDetailScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView,  Pressable } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from '@react-native-vector-icons/ionicons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AppButton from '../components/AppButton';
 import Badge from '../components/Badge';
