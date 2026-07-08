@@ -84,9 +84,9 @@ This project assumes an existing bare React Native CLI TypeScript app (RN 0.86) 
 
 _Add screenshots here once you've run the app on your emulator/device — for example:_
 
-| Home | Workouts | Progress | Dark mode |
+| Welcome |Login | Home | Workouts | Progress | Profile| Dark mode |
 |------|----------|----------|-----------|
-| _screenshot_ | _screenshot_ | _screenshot_ | _screenshot_ |
+| ![Welcome Screen](./src/assets/screenshots/WelcomeScreen.png) | ![Login Screen](./src/assets/screenshots/LoginScreen.png)  |  ![Home Screen](./src/assets/screenshots/HomeScreen.png) |  ![Workouts Screen](./src/assets/screenshots/WorkOut.png) |  ![Progress Screen](./src/assets/screenshots/Progress.png) |  ![Profile Screen](./src/assets/screenshots/Progress.png) |  ![DarkMode Profile Screen](./src/assets/screenshots/DarkModeProfile.png) |  ![DarkMode Home Screen](./src/assets/screenshots/DarkMode%20Home.png) |
 
 ## Known limitations / next steps
 
