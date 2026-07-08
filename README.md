@@ -86,7 +86,7 @@ _Add screenshots here once you've run the app on your emulator/device — for ex
 
 | Welcome |Login | Home | Workouts | Progress | Profile| Dark mode |
 |------|----------|----------|-----------|
-| ![Welcome Screen](./src/assets/screenshots/WelcomeScreen.png) | ![Login Screen](./src/assets/screenshots/LoginScreen.png)  |  ![Home Screen](./src/assets/screenshots/HomeScreen.png) |  ![Workouts Screen](./src/assets/screenshots/WorkOut.png) |  ![Progress Screen](./src/assets/screenshots/Progress.png) |  ![Profile Screen](./src/assets/screenshots/Progress.png) |  ![DarkMode Profile Screen](./src/assets/screenshots/DarkModeProfile.png) |
+| ![Welcome Screen](./src/assets/screenshots/WelcomeScreen.png) | ![Login Screen](./src/assets/screenshots/LoginScreen.png)  |  ![Home Screen](./src/assets/screenshots/HomeScreen.png) |  ![Workouts Screen](./src/assets/screenshots/WorkOut.png) |  ![Progress Screen](./src/assets/screenshots/Progress.png) |  ![Profile Screen](./src/assets/screenshots/Progress.png) |  ![DarkMode Profile Screen](./src/assets/screenshots/DarkModeProfile.png) |  ![DarkMode Home Screen](./src/assets/screenshots/DarkMode%20Home.png) |
 
 ## Known limitations / next steps
 
