@@ -1,16 +1,17 @@
-// src/screens/ProfileScreen.tsx
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Pressable, Alert } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, Pressable, Alert, Switch } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import ScreenHeader from '../components/ScreenHeader';
 import Badge from '../components/Badge';
 import { mockUser } from '../data/workouts';
-import { colors, typography, radius } from '../theme/colors';
-import { MainTabParamList, RootStackParamList } from '../types';
+import { typography, radius } from '../theme/colors';
+import { useTheme } from '../theme/ThemeContext';
+import { useAppData } from '../context/AppDataContext';
+import { MainTabParamList, RootStackParamList, ThemeColors } from '../types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type Props = CompositeScreenProps<
@@ -18,69 +19,99 @@ type Props = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList>
 >;
 
-const AVATAR = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300';
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface MenuItem {
-  icon: string;
+  icon: IoniconName;
   iconBg: string;
   iconColor: string;
   title: string;
   subtitle: string;
   danger?: boolean;
+  onPress: () => void;
 }
 
-const MENU_ITEMS: MenuItem[] = [
-  {
-    icon: 'flag-outline',
-    iconBg: '#E4F9F0',
-    iconColor: '#0F8A5F',
-    title: 'Fitness Goal',
-    subtitle: 'Build muscle and stamina',
-  },
-  {
-    icon: 'body-outline',
-    iconBg: '#E6F0FF',
-    iconColor: '#1D4ED8',
-    title: 'Body Details',
-    subtitle: 'Height, weight, age',
-  },
-  {
-    icon: 'notifications-outline',
-    iconBg: '#EDEBFB',
-    iconColor: '#6941C6',
-    title: 'Notifications',
-    subtitle: 'Workout reminders',
-  },
-  {
-    icon: 'help-buoy-outline',
-    iconBg: '#E6F4FF',
-    iconColor: '#0284C7',
-    title: 'Help & Support',
-    subtitle: 'Contact support',
-  },
-  {
-    icon: 'log-out-outline',
-    iconBg: '#FEE4E2',
-    iconColor: '#D92D20',
-    title: 'Logout',
-    subtitle: 'Sign out safely',
-    danger: true,
-  },
-];
+const AVATAR = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300';
 
 export default function ProfileScreen({ navigation }: Props) {
-  const handleMenuPress = (item: MenuItem) => {
-    if (item.title === 'Logout') {
-      Alert.alert('Log out', 'Are you sure you want to sign out?', [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: () => navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] }),
-        },
-      ]);
-    }
+  const { colors, isDark, toggleTheme } = useTheme();
+  const { favorites, history } = useAppData();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const handleLogout = () => {
+    Alert.alert('Log out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: () =>
+          navigation.getParent<NativeStackNavigationProp<RootStackParamList>>()?.reset({
+            index: 0,
+            routes: [{ name: 'Welcome' }],
+          }),
+      },
+    ]);
   };
+
+  const menuItems: MenuItem[] = [
+    {
+      icon: 'flag-outline',
+      iconBg: colors.greenTint,
+      iconColor: colors.primaryGreen,
+      title: 'Fitness Goal',
+      subtitle: 'Build muscle and stamina',
+      onPress: () => Alert.alert('Fitness Goal', `Current goal: ${mockUser.goal}`),
+    },
+    {
+      icon: 'body-outline',
+      iconBg: colors.darkTint,
+      iconColor: colors.text,
+      title: 'Body Details',
+      subtitle: `${mockUser.height} • ${mockUser.weight} • ${mockUser.age} yrs`,
+      onPress: () => Alert.alert('Body Details', `${mockUser.height}, ${mockUser.weight}, age ${mockUser.age}`),
+    },
+    {
+      icon: 'heart-outline',
+      iconBg: colors.orangeTint,
+      iconColor: colors.accentOrange,
+      title: 'Favorite Workouts',
+      subtitle: `${favorites.length} saved`,
+      onPress: () => navigation.navigate('Workouts'),
+    },
+    {
+      icon: 'time-outline',
+      iconBg: colors.greenTint,
+      iconColor: colors.primaryGreen,
+      title: 'Completion History',
+      subtitle: `${history.length} workouts logged`,
+      onPress: () => navigation.navigate('Progress'),
+    },
+    {
+      icon: 'notifications-outline',
+      iconBg: colors.darkTint,
+      iconColor: colors.text,
+      title: 'Notifications',
+      subtitle: 'Workout reminders',
+      onPress: () => Alert.alert('Notifications', 'Reminder settings coming soon.'),
+    },
+    {
+      icon: 'help-buoy-outline',
+      iconBg: colors.darkTint,
+      iconColor: colors.text,
+      title: 'Help & Support',
+      subtitle: 'Contact support',
+      onPress: () => Alert.alert('Help & Support', 'Reach us at support@gymflow.app'),
+    },
+    {
+      icon: 'log-out-outline',
+      iconBg: 'rgba(240,68,56,0.12)',
+      iconColor: colors.danger,
+      title: 'Logout',
+      subtitle: 'Sign out safely',
+      danger: true,
+      onPress: handleLogout,
+    },
+  ];
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -103,9 +134,26 @@ export default function ProfileScreen({ navigation }: Props) {
           </View>
         </LinearGradient>
 
-        <View style={{ marginTop: 20 }}>
-          {MENU_ITEMS.map((item) => (
-            <Pressable key={item.title} style={styles.menuRow} onPress={() => handleMenuPress(item)}>
+        {/* Dark mode toggle */}
+        <Pressable style={styles.menuRow} onPress={toggleTheme}>
+          <View style={[styles.menuIcon, { backgroundColor: colors.darkTint }]}>
+            <Ionicons name={isDark ? 'moon' : 'sunny-outline'} size={20} color={colors.text} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.menuTitle}>Dark Mode</Text>
+            <Text style={styles.menuSubtitle}>{isDark ? 'Currently on' : 'Currently off'}</Text>
+          </View>
+          <Switch
+            value={isDark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: colors.border, true: colors.primaryGreen }}
+            thumbColor={colors.white}
+          />
+        </Pressable>
+
+        <View style={{ marginTop: 4 }}>
+          {menuItems.map((item) => (
+            <Pressable key={item.title} style={styles.menuRow} onPress={item.onPress}>
               <View style={[styles.menuIcon, { backgroundColor: item.iconBg }]}>
                 <Ionicons name={item.icon} size={20} color={item.iconColor} />
               </View>
@@ -122,34 +170,35 @@ export default function ProfileScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.lightBackground },
-  container: { padding: 20, paddingBottom: 40 },
-  profileCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: radius.lg,
-    padding: 18,
-  },
-  avatar: { width: 64, height: 64, borderRadius: 32, marginRight: 16, borderWidth: 2, borderColor: colors.white },
-  userName: { ...typography.h3, color: colors.white },
-  userGoal: { ...typography.small, color: 'rgba(255,255,255,0.85)', marginTop: 2 },
-  menuRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.cardBackground,
-    borderRadius: radius.md,
-    padding: 14,
-    marginBottom: 10,
-  },
-  menuIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: radius.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 14,
-  },
-  menuTitle: { ...typography.bodyBold, color: colors.primaryDark },
-  menuSubtitle: { ...typography.small, color: colors.mutedText, marginTop: 2 },
-});
+const createStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    safe: { flex: 1, backgroundColor: colors.background },
+    container: { padding: 20, paddingBottom: 40 },
+    profileCard: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderRadius: radius.lg,
+      padding: 18,
+    },
+    avatar: { width: 64, height: 64, borderRadius: 32, marginRight: 16, borderWidth: 2, borderColor: colors.white },
+    userName: { ...typography.h3, color: colors.white },
+    userGoal: { ...typography.small, color: 'rgba(255,255,255,0.85)', marginTop: 2 },
+    menuRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.cardBackground,
+      borderRadius: radius.md,
+      padding: 14,
+      marginTop: 12,
+    },
+    menuIcon: {
+      width: 42,
+      height: 42,
+      borderRadius: radius.sm,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 14,
+    },
+    menuTitle: { ...typography.bodyBold, color: colors.text },
+    menuSubtitle: { ...typography.small, color: colors.mutedText, marginTop: 2 },
+  });

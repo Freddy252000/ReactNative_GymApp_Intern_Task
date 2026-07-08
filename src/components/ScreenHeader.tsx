@@ -1,23 +1,21 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Ionicons from '@react-native-vector-icons/ionicons';
-import { colors, typography } from '../theme/colors';
+import { typography } from '../theme/colors';
+import { useTheme } from '../theme/ThemeContext';
+
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface ScreenHeaderProps {
   title: string;
   onBack?: () => void;
-  rightIcon?: string;
+  rightIcon?: IoniconName;
   onRightPress?: () => void;
   dark?: boolean;
 }
-
-/**
- * Shared screen header. Supports an optional back button (for stacked
- * screens like Workout Detail) and an optional right-side icon action.
- */
 export default function ScreenHeader({ title, onBack, rightIcon, onRightPress, dark = false }: ScreenHeaderProps) {
-  const textColor = dark ? colors.white : colors.primaryDark;
-
+  const { colors } = useTheme();
+  const textColor = dark ? colors.white : colors.text;
   return (
     <View style={styles.row}>
       {onBack ? (
@@ -27,11 +25,9 @@ export default function ScreenHeader({ title, onBack, rightIcon, onRightPress, d
       ) : (
         <View style={styles.iconBtn} />
       )}
-
       <Text style={[styles.title, { color: textColor }]} numberOfLines={1}>
         {title}
       </Text>
-
       {rightIcon ? (
         <Pressable onPress={onRightPress} hitSlop={12} style={styles.iconBtn}>
           <Ionicons name={rightIcon} size={22} color={textColor} />
@@ -42,7 +38,6 @@ export default function ScreenHeader({ title, onBack, rightIcon, onRightPress, d
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
