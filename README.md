@@ -1,97 +1,95 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# GymFlow
 
-# Getting Started
+A React Native (CLI, TypeScript) gym / fitness companion app. Browse workouts, track completions, favorite the ones you love, and watch your weekly progress animate in.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- **Onboarding & mock auth** — Welcome → Login → main app, with basic field validation.
+- **Home** — today's workout, weekly summary, quick actions.
+- **Workouts** — search, category filters, and a favorites-only filter.
+- **Workout Detail** — exercise list, favorite toggle, animated in-progress bar, "mark as completed" flow.
+- **Progress** — weekly goal ring, stat cards, an animated weekly activity chart, and a full completion history list.
+- **Profile** — account summary, favorites/history counts, dark mode toggle, logout.
+- **Dark mode** — toggle in Profile, persisted across app restarts.
+- **Favorites** — heart any workout from the list or detail screen; persisted locally.
+- **Completion history** — every workout you mark complete is logged with date, duration, and calories; persisted locally.
+- **Local persistence** — favorites, history, and theme preference are all saved with `@react-native-async-storage/async-storage`, so they survive an app restart.
+- **Animated progress** — goal ring, weekly bars, and the workout-detail progress bar all animate with the `Animated` API.
+- **Loading / empty / error states** — Workouts, Progress, and Profile all show a real loading indicator while storage is read, a friendly empty state when there's no data yet, and an error state with a retry button if a read/write fails.
+- **TypeScript throughout** — shared types live in `src/types/index.ts`.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Project structure
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+App.tsx                        # Providers (theme, app data) + navigator
+src/
+  types/index.ts                # Shared TS types (Workout, CompletionEntry, ThemeColors, ...)
+  theme/
+    colors.ts                   # Light + dark palettes, typography, radius, spacing
+    ThemeContext.tsx             # Dark mode state, persisted to AsyncStorage
+  context/
+    AppDataContext.tsx           # Favorites + completion history, persisted to AsyncStorage
+  components/
+    AppButton.tsx / AppCard.tsx / Badge.tsx / ScreenHeader.tsx
+    AnimatedProgressBar.tsx      # Horizontal + vertical animated bar
+    EmptyState.tsx / LoadingState.tsx / ErrorState.tsx
+  data/workouts.ts               # Mock workout + user data
+  navigation/AppNavigator.tsx    # Stack + bottom tabs
+  screens/
+    WelcomeScreen.tsx / LoginScreen.tsx
+    HomeScreen.tsx / WorkoutListScreen.tsx / WorkoutDetailScreen.tsx
+    ProgressScreen.tsx / ProfileScreen.tsx
 ```
 
-## Step 2: Build and run your app
+## Setup
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+This project assumes an existing bare React Native CLI TypeScript app (RN 0.86) with navigation already installed. If you're merging these files into your existing `ReactNative_GymApp_Intern_Task` project:
 
-### Android
+1. Copy the `src/` folder and `App.tsx` into your project root, overwriting the matching files.
+2. Install the one new dependency used for persistence:
 
-```sh
-# Using npm
-npm run android
+   ```bash
+   npm install @react-native-async-storage/async-storage
+   # or
+   yarn add @react-native-async-storage/async-storage
+   ```
 
-# OR using Yarn
-yarn android
-```
+   For Android, no extra linking step is needed with autolinking — just rebuild:
 
-### iOS
+   ```bash
+   npx react-native run-android
+   ```
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+3. Confirm you already have these (used by earlier screens, unchanged here):
+   - `@react-navigation/native`, `@react-navigation/native-stack`, `@react-navigation/bottom-tabs`
+   - `react-native-screens`, `react-native-safe-area-context`
+   - `@react-native-vector-icons/ionicons`
+   - `react-native-linear-gradient`
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+4. Run Metro and the Android build as usual:
 
-```sh
-bundle install
-```
+   ```bash
+   npx react-native start
+   npx react-native run-android
+   ```
 
-Then, and every time you update your native dependencies, run:
+## Notes on the new features
 
-```sh
-bundle exec pod install
-```
+- **Dark mode**: `ThemeProvider` reads/writes `gymflow:themeMode` in AsyncStorage and falls back to the device's OS color scheme on first launch. All screens read colors via `useTheme()` instead of the old static `colors` import, so toggling instantly re-renders every screen.
+- **Favorites**: stored as an array of workout ids under `gymflow:favorites`. `WorkoutListScreen` has a heart toggle in the header to filter to favorites only; `WorkoutDetailScreen` has a heart in the top bar.
+- **Completion history**: every "Mark as Completed" tap appends a `CompletionEntry` (workout id/title, duration, calories, ISO timestamp) to `gymflow:history`. `ProgressScreen` derives this week's stats, a per-weekday activity chart, and a day streak directly from that history, falling back to the original mock data only when history is empty (fresh install).
+- **Animated bars**: `AnimatedProgressBar` wraps `Animated.timing` and supports both horizontal (goal ring, workout progress) and vertical (weekly chart) modes.
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Screenshots
 
-```sh
-# Using npm
-npm run ios
+_Add screenshots here once you've run the app on your emulator/device — for example:_
 
-# OR using Yarn
-yarn ios
-```
+| Home | Workouts | Progress | Dark mode |
+|------|----------|----------|-----------|
+| _screenshot_ | _screenshot_ | _screenshot_ | _screenshot_ |
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Known limitations / next steps
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- Login is mocked (no real backend) — any non-empty email/password logs you in.
+- Workout data is static mock data; swapping in a real API would mean replacing `src/data/workouts.ts` with fetch calls.
+- No unit tests included yet.
