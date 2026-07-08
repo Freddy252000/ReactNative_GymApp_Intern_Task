@@ -1,5 +1,3 @@
-// All mock data for the app lives here so screens stay presentation-only.
-// In a real app this file would be replaced by API calls.
 import { MockUser, WeeklyActivityDay, WeeklySummary, Workout, WorkoutCategory } from '../types';
 
 export const categories: WorkoutCategory[] = ['All', 'Strength', 'Cardio', 'Yoga', 'HIIT', 'Full Body'];

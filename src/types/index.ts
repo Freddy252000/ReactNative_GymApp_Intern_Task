@@ -45,9 +45,38 @@ export interface MockUser {
   weight: string;
   age: number;
 }
+export interface CompletionEntry {
+  id: string;
+  workoutId: string;
+  workoutTitle: string;
+  category: WorkoutCategory;
+  duration: number;
+  calories: number;
+  completedAt: string;
+}
 
-// Root stack: onboarding + auth, then the tab navigator, then modals/detail
-// screens pushed on top of it.
+export type FavoriteIds = string[];
+
+export type ThemeMode = 'light' | 'dark';
+
+export interface ThemeColors {
+  primaryDark: string;
+  primaryGreen: string;
+  accentOrange: string;
+  background: string;
+  cardBackground: string;
+  mutedText: string;
+  text: string;
+  white: string;
+  black: string;
+  border: string;
+  danger: string;
+  greenTint: string;
+  orangeTint: string;
+  darkTint: string;
+  overlay: string;
+}
+
 export type RootStackParamList = {
   Welcome: undefined;
   Login: undefined;
@@ -55,7 +84,6 @@ export type RootStackParamList = {
   WorkoutDetail: { workout: Workout };
 };
 
-// Bottom tab navigator shown after login.
 export type MainTabParamList = {
   Home: undefined;
   Workouts: undefined;
